@@ -1,0 +1,102 @@
+//ultrasonic forward
+int power = 255;
+
+void setup() {
+   Serial.begin(9600); 
+  
+  //Setup Channel A
+  pinMode(12, OUTPUT); //Initiates Motor Channel A pin
+  pinMode(9, OUTPUT); //Initiates Brake Channel A pin
+
+  //Setup Channel B
+  pinMode(13, OUTPUT); //Initiates Motor Channel A pin
+  pinMode(8, OUTPUT);  //Initiates Brake Channel A pin
+  
+  pinMode(12, OUTPUT);
+  digitalWrite(12, LOW);
+  
+  delay(5000);
+  
+  lforward();
+  rforward();
+}
+
+void loop(){
+//  int far = howFar();
+//  Serial.println(far);
+//  
+int far = 30;
+  if (far < 20){
+  lstop();
+  rstop();
+    
+  lback();
+  rback();
+  delay(3000);
+  
+  lstop();
+  rstop();
+  }
+  
+  else{
+    lforward();
+    rforward();
+  }
+}
+void lforward(){
+  //Motor A forward @ full speed
+  digitalWrite(12, HIGH);
+  digitalWrite(9, LOW);   //Disengage the Brake for Channel A
+  analogWrite(3, power);   //Spins the motor on Channel A at full speed
+}
+void rforward(){
+  //Motor B forward @ full speed
+  digitalWrite(13, HIGH);  //Establishes backward direction of Channel B
+  digitalWrite(8, LOW);   //Disengage the Brake for Channel B
+  analogWrite(11, power);    //Spins the motor on Channel B at half speed
+}
+
+void lstop(){ 
+  digitalWrite(9, HIGH);  //Engage the Brake for Channel A
+}
+void rstop(){
+  digitalWrite(8, HIGH);  //Engage the Brake for Channel B
+}  
+
+void lback(){
+  //Motor A backward @ full speed
+  digitalWrite(12, LOW);  //Establishes backward direction of Channel A
+  digitalWrite(9, LOW);   //Disengage the Brake for Channel A
+  analogWrite(3, power);    //Spins the motor on Channel A at half speed
+}
+void rback(){
+  //Motor B backward @ full speed
+  digitalWrite(13, LOW); //Establishes forward direction of Channel B
+  digitalWrite(8, LOW);   //Disengage the Brake for Channel B
+  analogWrite(11, power);   //Spins the motor on Channel B at full speed
+}
+//int howFar(){
+//  int trigpin = 5;
+//  int echopin = 4;
+//  
+//  pinMode(trigpin, OUTPUT);
+//  pinMode(echopin, INPUT);
+//  
+//  int cm = 0;
+//  int duration = 0;
+//  
+//  digitalWrite(trigpin, LOW);
+//  delayMicroseconds(2);
+//  
+//  digitalWrite(trigpin, HIGH);
+//  delayMicroseconds(10);
+//  
+//  digitalWrite(trigpin, LOW);
+//  duration = pulseIn(echopin, HIGH);
+//  
+//  cm = duration / 58.2;
+//  
+//  Serial.println(cm);
+//  
+//  return cm;
+//}
